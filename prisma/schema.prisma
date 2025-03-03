@@ -18,6 +18,8 @@ model User{
   firstName   String 
   lastName    String     
   email       String      @unique
+  bio         String?
+  profilePic  String?
   follower    Followers[] @relation("followers")
   following   Followers[] @relation("followings")
   user1       Chat[]      @relation("UserChat")
@@ -25,6 +27,7 @@ model User{
   send        Message[]
   block       BlockUser[] @relation("blocker")
   blocked     BlockUser[] @relation("blocked")
+  activity    Activity[]
 }
 
 model BlockUser{
@@ -51,7 +54,11 @@ model Activity{
   id          String       @id @default(uuid())
   dayCount    Int          @default(21)
   name        String
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
   description String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
   level       Level[]
 }
 
